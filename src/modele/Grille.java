@@ -32,7 +32,7 @@ public class Grille {
         for(int y=0; y<longueur;y++){
             for(int x=0;x<largeur;x++){
                 
-                grille[y][x]=blanc;
+                grille[y][x]=null;
                 
             }
             
@@ -41,9 +41,43 @@ public class Grille {
         {
             for(int x=0;x<p.getLargeur();x++)
             {
+                
                 grille[y+p.getPositionY()][x+p.getPositionX()]=p.getMatrice()[y][x];
             }
         }
+    }
+    
+    public void effacerPiece(Piece p)
+    {
+        for( int y=0;y<p.getLongueur();y++)
+        {
+            for(int x=0;x<p.getLargeur();x++)
+            {
+                
+                grille[y+p.getPositionY()][x+p.getPositionX()]=null;
+            }
+        }
+    }
+    
+    public boolean verifierEmplacement(Piece p)
+    {
+       for( int y=0;y<p.getLongueur();y++)
+        {
+            for(int x=0;x<p.getLargeur();x++)
+            {
+                
+                if( 0<=y+p.getPositionY()&& y+p.getPositionY()<longueur && 0<=x+p.getPositionX() &&x+p.getPositionX()<largeur )
+                {
+                    if(grille[y+p.getPositionY()][x+p.getPositionX()]!=null)
+                    {return false;}
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        } 
+       return true;
     }
 
     public int getLargeur() {

@@ -34,7 +34,13 @@ public class TetrisControler {
     if(this.listeEvenement.contains(touche)){
       //Si l'opérateur est = 
       if("B".equals(touche))
-        this.jeu.descendrePiece(); //On ordonne au modèle d'afficher le résultat
+      {
+          this.jeu.descendrePiece();
+      } //On ordonne au modèle d'afficher le résultat
+      if("D".equals(touche))
+      { this.jeu.deplacerDroite();}
+      if("G".equals(touche))
+      { this.jeu.deplacerGauche();}
       
     }
    }

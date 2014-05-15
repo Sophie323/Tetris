@@ -18,19 +18,44 @@ public abstract class Piece {
     private int positionY;
     protected int largeur;
     protected int longueur;
+    private boolean bloque;
     
     protected Bloc[][] matrice;
 
     public Piece(int positionX, int positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
+        this.bloque=false;
     }
+
+    public boolean isBloque() {
+        return bloque;
+    }
+
+    public void setBloque(boolean bloque) {
+        this.bloque = bloque;
+    }
+    
+    
+    
     /*
     public abstract void rotationPiece();
     public abstract void deplacerPieceLateral();*/
-    public void deplacerPieceVertical()
+    public void deplacerPieceBas()
     {
         positionY++;
+    }
+    public void deplacerPieceHaut()
+    {
+        positionY--;
+    }
+    public void deplacerPieceGauche()
+    {
+        positionX--;
+    }
+    public void deplacerPieceDroite()
+    {
+        positionX++;
     }
 
     public void setPositionX(int positionX) {

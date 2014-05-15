@@ -94,7 +94,13 @@ public class Vue extends JFrame implements ObserverGrille, ObserverTemps{
         if (grille != null) {
             for (int y = 0; y < grille.getLongueur(); y++) {
                 for (int x = 0; x < grille.getLargeur(); x++) {
-                    pan.getComponent(x + y * 10).setBackground(grille.getGrille()[y][x].getCouleur());
+                    if(grille.getGrille()[y][x]==null){
+                        pan.getComponent(x + y * 10).setBackground(Color.WHITE);
+                    }
+                    else{
+                        pan.getComponent(x + y * 10).setBackground(grille.getGrille()[y][x].getCouleur());
+                    }
+                    
                 }
             }
              
@@ -127,6 +133,15 @@ class Fleche implements KeyListener{
     public void keyPressed(KeyEvent e) {
      if(e.getExtendedKeyCode()==KeyEvent.VK_DOWN)
      { controler.control("B");}
+     if(e.getExtendedKeyCode()==KeyEvent.VK_LEFT)
+     {
+         controler.control("G");
+     }
+      if(e.getExtendedKeyCode()==KeyEvent.VK_RIGHT)
+     {
+         controler.control("D");
+     }
+    
       
         
                     
