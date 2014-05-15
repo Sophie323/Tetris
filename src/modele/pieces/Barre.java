@@ -33,6 +33,23 @@ public class Barre extends Piece{
             matrice[x][0]=block;
         }
     }
+    
+    @Override
+    public void rotationPiece()
+    {
+        if(largeur==1)
+        {
+        positionX--;
+        positionY++;
+        }
+        else{
+            positionX++;
+            positionY--;
+        }
+        super.rotationPiece();
+        
+        
+    }
 
     public void setLargeur(int largeur) {
         this.largeur = largeur;

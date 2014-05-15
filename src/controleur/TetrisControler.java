@@ -41,6 +41,8 @@ public class TetrisControler {
       { this.jeu.deplacerDroite();}
       if("G".equals(touche))
       { this.jeu.deplacerGauche();}
+      if("H".equals(touche))
+      { this.jeu.rotationPiece();}
       
     }
    }

@@ -141,7 +141,10 @@ class Fleche implements KeyListener{
      {
          controler.control("D");
      }
-    
+     if(e.getExtendedKeyCode()==KeyEvent.VK_UP)
+     {
+         controler.control("H");
+     }
       
         
                     

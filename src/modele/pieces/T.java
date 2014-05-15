@@ -38,6 +38,26 @@ public class T extends Piece{
     public void setLargeur(int largeur) {
         this.largeur = largeur;
     }
+    
+    @Override
+    public void rotationPiece()
+    {
+        if(largeur==2 && matrice[0][0]!=null)
+        {
+            positionX--;
+            positionY++;
+        }
+        else if(largeur==3 &&  matrice[0][0]!=null){
+            positionY--;
+            
+        }
+        else if(largeur==3 &&  matrice[0][0]==null){
+            positionX++;
+            
+        }
+        super.rotationPiece();
+        
+    }
 
     public void setLongueur(int longueur) {
         this.longueur = longueur;

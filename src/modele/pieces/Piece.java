@@ -14,8 +14,8 @@ import modele.Bloc;
  */
 public abstract class Piece {
     
-    private int positionX;
-    private int positionY;
+    protected int positionX;
+    protected int positionY;
     protected int largeur;
     protected int longueur;
     private boolean bloque;
@@ -56,6 +56,25 @@ public abstract class Piece {
     public void deplacerPieceDroite()
     {
         positionX++;
+    }
+    
+    public void rotationPiece()
+    {
+        int height=largeur;
+        int width=longueur;
+        Bloc[][] piece=new Bloc[height][width];
+        for(int i=0;i<largeur;i++)
+        {
+            for(int j=0;j<longueur;j++)
+            {
+                piece[i][j]=matrice[longueur-1-j][i];
+            }
+        }
+        largeur=width;
+        longueur=height;
+        matrice=piece;
+        
+        
     }
 
     public void setPositionX(int positionX) {

@@ -9,8 +9,11 @@ package modele;
 import Observe.ObservableGrille;
 import Observe.ObserverGrille;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modele.pieces.Barre;
 import modele.pieces.Piece;
+import modele.pieces.*;
 
 /**
  *
@@ -20,17 +23,19 @@ public class Jeu implements ObservableGrille{
     
     private Grille grille;
     private Piece pieceCourante;
+  
+    boolean mep=false;
     private ArrayList<ObserverGrille> listObserver = new ArrayList<ObserverGrille>();
     public Jeu() {
         grille = new Grille(10,20);
-        pieceCourante= new Barre();
+        pieceCourante= new T();
     }
 
     public Grille getGrille() {
         return grille;
     }
     
-    
+ 
     public void descendrePiece(){
         
         if(!pieceCourante.isBloque())
@@ -90,7 +95,23 @@ public class Jeu implements ObservableGrille{
             notifyObserver(grille);
         }
     }
-    
+        public void rotationPiece()
+        {
+            
+            
+            if(!pieceCourante.isBloque())
+            {
+                grille.effacerPiece(pieceCourante);
+                pieceCourante.rotationPiece();
+                while(!grille.verifierEmplacement(pieceCourante))
+                {
+                    pieceCourante.rotationPiece();
+                }
+                grille.dessinerPiece(pieceCourante);
+                
+                notifyObserver(grille);     
+            }
+        }
     public void addObserver(ObserverGrille obs) {
     this.listObserver.add(obs);
   }
