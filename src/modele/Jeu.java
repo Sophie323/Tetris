@@ -46,6 +46,7 @@ public class Jeu implements ObservableGrille{
                 pieceCourante.deplacerPieceHaut();
                 grille.dessinerPiece(pieceCourante);
                 pieceCourante.setBloque(true);
+                grille.effacerLigne(); 
             }
             notifyObserver(grille);
         }
@@ -65,7 +66,7 @@ public class Jeu implements ObservableGrille{
             {
                 pieceCourante.deplacerPieceDroite();
                 grille.dessinerPiece(pieceCourante);
-                
+                grille.effacerLigne();       
             }
             notifyObserver(grille);
         }
@@ -85,11 +86,12 @@ public class Jeu implements ObservableGrille{
             {
                 pieceCourante.deplacerPieceGauche();
                 grille.dessinerPiece(pieceCourante);
-                
+                grille.effacerLigne();      
             }
             notifyObserver(grille);
         }
     }
+       
     
     public void addObserver(ObserverGrille obs) {
     this.listObserver.add(obs);

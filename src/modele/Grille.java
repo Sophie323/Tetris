@@ -79,6 +79,36 @@ public class Grille {
         } 
        return true;
     }
+    
+     public boolean verifierLigne()
+    {
+        for(int y=0; y<longueur;y++)
+        {
+            for(int x=0;x<largeur;x++)
+            {               
+                if(grille[y][x]==null)
+                { 
+                    return false;
+                }                   
+            }
+        }
+        return true;
+    }
+     
+     public void effacerLigne()
+     {
+         if(verifierLigne())
+         {
+            for(int y=0; y<longueur;y++)
+            {
+                for(int x=0;x<largeur;x++)
+                {               
+                     grille[y][x]=grille[y-1][x];
+                }
+            } 
+         }
+                 
+     }
 
     public int getLargeur() {
         return largeur;
