@@ -80,34 +80,43 @@ public class Grille {
        return true;
     }
     
-     public boolean verifierLigne()
-    {
-        for(int y=0; y<longueur;y++)
-        {
-            for(int x=0;x<largeur;x++)
-            {               
-                if(grille[y][x]==null)
-                { 
-                    return false;
-                }                   
-            }
+     public boolean verifierLigne(int numLigne)
+    {       
+        //numLigne : 1ère ligne pleine détectée
+        for(int x=0;x<largeur;x++)
+        {               
+            if(grille[numLigne][x]==null)
+            { 
+                return false;
+            }  
         }
         return true;
     }
      
      public void effacerLigne()
      {
-         if(verifierLigne())
-         {
-            for(int y=0; y<longueur;y++)
+        int numLigne=0;
+        for(int y=0; y<longueur; y++)
+        {
+            if(verifierLigne(y))
             {
-                for(int x=0;x<largeur;x++)
-                {               
-                     grille[y][x]=grille[y-1][x];
-                }
-            } 
-         }
-                 
+                //la ligne pleine détectée est supprimée et on décale la grille vers le bas
+                deplacerGrille(numLigne);
+            }
+        }           
+     }
+     
+     public void deplacerGrille(int numLigne)
+     {
+        for(int y=0; y<numLigne; y++)
+        {
+            for(int x=0;x<largeur;x++)
+            {               
+                grille[y+1][x]=grille[y][x];
+                //on rajoute des blocs vides à la 1ère ligne
+                grille[0][x]=null;
+            }
+        }
      }
 
     public int getLargeur() {
