@@ -42,8 +42,10 @@ public class Grille {
         {
             for(int x=0;x<p.getLargeur();x++)
             {
-                
+                if(p.getMatrice()[y][x]!=null)
+                {
                 grille[y+p.getPositionY()][x+p.getPositionX()]=p.getMatrice()[y][x];
+                }
             }
         }
     }
@@ -54,8 +56,10 @@ public class Grille {
         {
             for(int x=0;x<p.getLargeur();x++)
             {
-                
+                if(p.getMatrice()[y][x]!=null)
+                {
                 grille[y+p.getPositionY()][x+p.getPositionX()]=null;
+                }
             }
         }
     }
@@ -69,13 +73,13 @@ public class Grille {
                 
                 if( 0<=y+p.getPositionY()&& y+p.getPositionY()<longueur && 0<=x+p.getPositionX() &&x+p.getPositionX()<largeur )
                 {
-                    if(grille[y+p.getPositionY()][x+p.getPositionX()]!=null)
+                    if( grille[y+p.getPositionY()][x+p.getPositionX()]!=null  && p.getMatrice()[y][x] != null)
                     {return false;}
                 }
-                else
-                {
+                else{
                     return false;
                 }
+               
             }
         } 
        return true;
@@ -96,28 +100,30 @@ public class Grille {
      
      public void effacerLigne()
      {
-        int numLigne=0;
+        
         for(int y=0; y<longueur; y++)
         {
             if(verifierLigne(y))
             {
                 //la ligne pleine détectée est supprimée et on décale la grille vers le bas
-                deplacerGrille(numLigne);
+                deplacerGrille(y);
             }
         }           
      }
      
      public void deplacerGrille(int numLigne)
      {
-        for(int y=0; y<numLigne; y++)
+        for(int y=numLigne; y>0; y--)
         {
+            
             for(int x=0;x<largeur;x++)
             {               
-                grille[y+1][x]=grille[y][x];
+                grille[y][x]=grille[y-1][x];
                 //on rajoute des blocs vides à la 1ère ligne
-                grille[0][x]=null;
+                
             }
         }
+        
      }
 
     public int getLargeur() {

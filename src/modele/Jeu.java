@@ -53,8 +53,10 @@ public class Jeu implements ObservableGrille,Runnable{
                 maj("B");
                 if(pieceCourante.isBloque())
                 {
-                     genererPiece();         
+                     genererPiece();   
+                     grille.dessinerPiece(pieceCourante);
                 }
+                
                 notifyObserver(grille);
                 Thread.currentThread().sleep(500);
                 if(mep)
@@ -128,7 +130,10 @@ public class Jeu implements ObservableGrille,Runnable{
     }
         public void genererPiece()
     {
-        pieceCourante=listePieces[(int)(Math.random() * 6)];
+        pieceCourante=listePieces[(int)(Math.random() * 7)];
+        pieceCourante.setPositionY(0);
+        pieceCourante.setPositionX(0);
+        pieceCourante.setBloque(false);
     }
     
     public void deplacerGauche(){
