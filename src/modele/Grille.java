@@ -32,7 +32,7 @@ public class Grille {
         for(int y=0; y<longueur;y++){
             for(int x=0;x<largeur;x++){
                 
-                grille[y][x]=blanc;
+                grille[y][x]=null;
                 
             }
             

@@ -12,6 +12,7 @@ import modele.Bloc;
  *
  * @author p0909863
  */
+
 public class Barre extends Piece{
     
     
@@ -23,7 +24,7 @@ public class Barre extends Piece{
         largeur=1;
         longueur=4;
         
-        Bloc block = new Bloc(Color.BLUE);
+        Bloc block = new Bloc(Color.CYAN);
         
         for(int x=0; x<4; x++)
         {
