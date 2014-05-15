@@ -38,7 +38,7 @@ public class Tetris {
     
      //Instanciation de notre modèle
     Jeu jeu = new Jeu();
-    Temps temps=new Temps();
+   // Temps temps=new Temps();
     //Création du contrôleur
     TetrisControler controler = new TetrisControler(jeu);
     
@@ -47,7 +47,8 @@ public class Tetris {
     
     //Ajout de la fenêtre comme observer de notre modèle
     jeu.addObserver(vue);
-    temps.addObserver(vue);
-    temps.run();
+    (new Thread(jeu)).start();
+    //temps.addObserver(vue);
+    //temps.run();
   }
 }

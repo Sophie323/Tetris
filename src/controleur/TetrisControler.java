@@ -24,6 +24,8 @@ public class TetrisControler {
     this.listeEvenement.add("B");
     this.listeEvenement.add("D");
     this.listeEvenement.add("G");
+    this.listeEvenement.add("Pause");
+    this.listeEvenement.add("Jouer");
    }
   
   public void control(String touche) {
@@ -31,6 +33,24 @@ public class TetrisControler {
     //--------------------------------------------------------
     
     //Si l'opérateur est dans la liste
+      
+      
+      if(this.listeEvenement.contains(touche)){
+          if("Pause".equals(touche))
+          {
+              jeu.mettreEnPause();
+          }
+          if("Jouer".equals(touche)){
+            jeu.play();
+            
+        }
+          else{
+              jeu.maj(touche);
+          }
+         
+      }
+      
+      /*
     if(this.listeEvenement.contains(touche)){
       //Si l'opérateur est = 
       if("B".equals(touche))
@@ -44,7 +64,6 @@ public class TetrisControler {
       if("H".equals(touche))
       { this.jeu.rotationPiece();}
       
-    }
+    }*/
    }
-  
 }

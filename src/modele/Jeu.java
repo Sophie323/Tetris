@@ -19,7 +19,7 @@ import modele.pieces.*;
  *
  * @author p0909863
  */
-public class Jeu implements ObservableGrille{
+public class Jeu implements ObservableGrille,Runnable{
     
     private Grille grille;
     private Piece pieceCourante;
@@ -36,6 +36,61 @@ public class Jeu implements ObservableGrille{
     }
     
  
+       public  void run(){
+        while(true)
+        {
+            try {
+                maj("B");
+                notifyObserver(grille);
+                Thread.currentThread().sleep(500);
+                if(mep)
+                {
+                    synchronized(this)
+                            {
+                    wait();
+                            }
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public  void play()
+    {
+        mep=false;
+        synchronized(this)
+        {
+            notify();
+            
+        }
+    }
+    public synchronized void maj(String action)
+    {
+        if(!mep)
+        {
+      switch(action){
+          case "B":
+              descendrePiece();
+              break;
+          case "G":
+                  deplacerGauche();
+                  break;
+              
+          case "D":
+                  deplacerDroite();
+                  break;
+          case "H":
+                   rotationPiece();
+              break;
+      }
+        }
+    }
+    public void mettreEnPause()
+    {
+        mep=true;
+    }
+    
     public void descendrePiece(){
         
         if(!pieceCourante.isBloque())
