@@ -31,7 +31,7 @@ public class Temps implements Runnable,ObservableTemps{
     public void run(){
         while(true){
             
-        while(fin-debut<100000)
+        while(fin-debut<1500)
         {
             fin=System.currentTimeMillis();
         }

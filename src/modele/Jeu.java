@@ -23,14 +23,24 @@ public class Jeu implements ObservableGrille,Runnable{
     
     private Grille grille;
     private Piece pieceCourante;
+    private Piece[] listePieces;
   
     boolean mep=false;
     private ArrayList<ObserverGrille> listObserver = new ArrayList<ObserverGrille>();
+    
     public Jeu() {
         grille = new Grille(10,20);
-        pieceCourante= new T();
+        pieceCourante= new L();
+        listePieces = new Piece[7];
+        listePieces[0] = new Barre();
+        listePieces[1] = new Carre();
+        listePieces[2] = new J();
+        listePieces[3] = new L();
+        listePieces[4] = new S();
+        listePieces[5] = new T();
+        listePieces[6] = new Z();
     }
-
+    
     public Grille getGrille() {
         return grille;
     }
@@ -106,7 +116,8 @@ public class Jeu implements ObservableGrille,Runnable{
                 pieceCourante.deplacerPieceHaut();
                 grille.dessinerPiece(pieceCourante);
                 pieceCourante.setBloque(true);
-                grille.effacerLigne(); 
+                grille.effacerLigne();
+                genererPiece();         
             }
             notifyObserver(grille);
         }
@@ -126,7 +137,7 @@ public class Jeu implements ObservableGrille,Runnable{
             {
                 pieceCourante.deplacerPieceDroite();
                 grille.dessinerPiece(pieceCourante);
-                grille.effacerLigne();       
+                grille.effacerLigne();              
             }
             notifyObserver(grille);
         }
@@ -146,7 +157,7 @@ public class Jeu implements ObservableGrille,Runnable{
             {
                 pieceCourante.deplacerPieceGauche();
                 grille.dessinerPiece(pieceCourante);
-                grille.effacerLigne();      
+                grille.effacerLigne();
             }
             notifyObserver(grille);
         }
