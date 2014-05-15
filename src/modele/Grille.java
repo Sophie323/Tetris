@@ -23,13 +23,7 @@ public class Grille {
         this.largeur = largeur;
         this.longueur = longueur;
         this.grille=new Bloc[this.longueur][this.largeur];
-    }
-    
-    
-    public void dessinerPiece(Piece p)
-    {
-        Bloc blanc=new Bloc(Color.white);
-        for(int y=0; y<longueur;y++){
+         for(int y=0; y<longueur;y++){
             for(int x=0;x<largeur;x++){
                 
                 grille[y][x]=null;
@@ -37,6 +31,13 @@ public class Grille {
             }
             
         }
+    }
+    
+    
+    public void dessinerPiece(Piece p)
+    {
+      
+       
         for( int y=0;y<p.getLongueur();y++)
         {
             for(int x=0;x<p.getLargeur();x++)
