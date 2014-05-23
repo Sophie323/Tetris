@@ -11,6 +11,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +31,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
 import modele.Grille;
@@ -213,12 +216,59 @@ public class Vue extends JFrame implements ObserverGrille{
     
     public void afficherGauche(){
         gauche = new JPanel();
+        JPanel cont = new JPanel();
+        JPanel titlePanel = new JPanel();
+        JLabel hold = new JLabel("HOLD", SwingConstants.CENTER);
+        JPanel scorePanel = new JPanel();
+        String sc= getScore();
+        JLabel score = new JLabel(sc,SwingConstants.CENTER);
+        JLabel titleScore = new JLabel("SCORE",SwingConstants.CENTER);
+        
+        //affichage du panneau principal
         gauche.setPreferredSize(new Dimension(233,700)); 
-        gauche.setLayout(layout);
         Border blackl = BorderFactory.createLineBorder(Color.darkGray, 2);
         gauche.setBorder(blackl);
+        
+        //affichage du panneau secondaire
+        cont.setPreferredSize(new Dimension(218, 660));
+        Border black = BorderFactory.createLineBorder(Color.darkGray, 1);
+        cont.setBorder(black);
+        
+        //affichage du label "hold"
+        titlePanel.setBackground(Color.DARK_GRAY);
+        titlePanel.setPreferredSize(new Dimension(200,60));
+        titlePanel.setLayout(new BorderLayout());       
+               
+        hold.setFont(new Font("Arial", Font.BOLD, 48));
+        hold.setForeground(Color.orange);
+       
+        //affichage de la pièce mise de côté
+        
+        //affichage du score
+        scorePanel.setBackground(Color.DARK_GRAY);
+        scorePanel.setPreferredSize(new Dimension(200,200));
+        scorePanel.setLayout(new BorderLayout());       
+            
+        titleScore.setFont(new Font("Arial", Font.BOLD, 48));
+        titleScore.setForeground(Color.orange);
+        score.setFont(new Font("Arial", Font.CENTER_BASELINE, 20));
+        score.setForeground(Color.lightGray);
+        
+        //construction du panel
+        titlePanel.add(hold, BorderLayout.CENTER);
+        cont.add(titlePanel, BorderLayout.CENTER);
+        scorePanel.add(titleScore, BorderLayout.NORTH);
+        scorePanel.add(score, BorderLayout.CENTER);
+        cont.add(scorePanel, BorderLayout.CENTER);
+        gauche.add(cont, BorderLayout.CENTER);
     }
     
+    public String getScore(){
+        String s="";
+        
+        
+        return s;
+    }
     
      public void update(Grille grille)
      {
@@ -252,6 +302,10 @@ public class Vue extends JFrame implements ObserverGrille{
          if(e.getExtendedKeyCode()==KeyEvent.VK_UP)
          {
              controler.control("H");
+         }
+         if(e.getExtendedKeyCode()==KeyEvent.VK_SPACE)
+         {
+             controler.control("Space");
          }
          if(e.getExtendedKeyCode()==KeyEvent.VK_P)
          {

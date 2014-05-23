@@ -52,6 +52,10 @@ public class Jeu implements ObservableGrille, Runnable {
     public Grille getGrille() {
         return grille;
     }
+      
+    public int getScore() {
+        return score;
+    }
 
     public void run() {
         while (true) {
@@ -115,6 +119,9 @@ public class Jeu implements ObservableGrille, Runnable {
                     break;
                 case "H":
                     rotationPiece();
+                    break;
+                case "Space":
+                    mettreDeCote();
                     break;
             }
             notifyObserver(grille);
@@ -216,6 +223,11 @@ public class Jeu implements ObservableGrille, Runnable {
 
             notifyObserver(grille);
         }
+    }
+    
+    public void mettreDeCote(){
+        //si y a pas de piece de côté, on la place à gauche
+        //sinon on la relâche dans le jeu
     }
 
     public void addObserver(ObserverGrille obs) {
