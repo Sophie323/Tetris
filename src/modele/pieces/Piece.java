@@ -36,6 +36,27 @@ public abstract class Piece {
         this.bloque = bloque;
     }
     
+    @Override
+    public String toString()
+    {
+        String s="";
+        for(int i=0;i<longueur;i++)
+        {
+            for(int j=0;j<largeur;j++)
+            {
+                if(matrice[i][j]!=null)
+                {
+                    s+=1;
+                }
+                else
+                {
+                    s+=0;
+                }
+            }
+            s+="\n";
+        }
+        return s;
+    }
     
     
     /*

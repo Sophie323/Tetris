@@ -98,17 +98,19 @@ public class Grille {
         return true;
     }
      
-     public void effacerLigne()
+     public int effacerLigne()
      {
-        
+        int nb_lignes=0;
         for(int y=0; y<longueur; y++)
         {
             if(verifierLigne(y))
             {
+                nb_lignes++;
                 //la ligne pleine détectée est supprimée et on décale la grille vers le bas
                 deplacerGrille(y);
             }
-        }           
+        }   
+        return nb_lignes;
      }
      
      public void deplacerGrille(int numLigne)
