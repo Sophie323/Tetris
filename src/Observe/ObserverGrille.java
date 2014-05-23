@@ -8,6 +8,7 @@ package Observe;
 
 
 import modele.Grille;
+import modele.pieces.Piece;
 
 /**
  *
@@ -15,5 +16,6 @@ import modele.Grille;
  */
 public interface ObserverGrille {
   public void update(Grille grille);
+  public void update(Piece piece);
   
 }

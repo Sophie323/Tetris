@@ -9,6 +9,7 @@ import Observe.ObserverTemps;
 import controleur.TetrisControler;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -31,20 +32,27 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
 import modele.Grille;
+import modele.pieces.Piece;
 
 /**
  *
  * @author frederic
  */
-public class Vue extends JFrame implements ObserverGrille, ObserverTemps{
+public class Vue extends JFrame implements ObserverGrille{
 
     private TetrisControler controler;
     private JPanel container = new JPanel();
     GridLayout layout = new GridLayout(20, 10);
+    GridLayout piece_layout=new GridLayout(5, 5);
+    GridLayout gridDroite=new GridLayout(3, 1);
     JPanel grille_pan;
+    JPanel piece_suivante;
+    
     JPanel gauche;
     JPanel droite;
-
+    
+    
+    
     public Vue(TetrisControler controleur) {
         super();
         this.controler = controleur;
@@ -95,18 +103,49 @@ public class Vue extends JFrame implements ObserverGrille, ObserverTemps{
             grille_pan.add(ptest);
         }
         
+        //-- Grille de la pièce suivante
+        piece_suivante=new JPanel();
+        piece_suivante.setPreferredSize(new Dimension(100,100)); 
+        piece_suivante.setLayout(piece_layout);
+        piece_suivante.setSize(233, 233);
+         for (int i = 0; i < 25; i++) {
+            JComponent ptest = new Case(Color.white);
+            
+            piece_suivante.add(ptest);
+        }
         
         afficherGrille(null);
         afficherGauche();
-        afficherDroite();
+       // afficherDroite();
+        afficherPieceSuivante(null);
         addKeyListener(new Fleche());
         setContentPane(container);
         
+        
+        
+        droite = new JPanel();
+        Border blackl = BorderFactory.createLineBorder(Color.darkGray, 2);
+        droite.setPreferredSize(new Dimension(233,700));
+        droite.setLayout(gridDroite);
+        
+        JPanel casep=new JPanel();
+        casep.add(piece_suivante);
+        JLabel next = new JLabel("next");
+        next.setSize(100,100);
+        droite.add(next);
+        droite.add(casep);
+       
         container.setLayout(new BorderLayout());
+       // droite.add(piece_suivante);
+        
+        
         
         container.add(grille_pan, BorderLayout.CENTER);
         container.add(gauche, BorderLayout.WEST);
         container.add(droite, BorderLayout.EAST);
+        
+        
+     
         setVisible(true);
         
         
@@ -130,13 +169,38 @@ public class Vue extends JFrame implements ObserverGrille, ObserverTemps{
         }
     }
     
+    public void afficherPieceSuivante(Piece piece)
+    {
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                piece_suivante.getComponent(i + j * 5).setBackground(Color.WHITE);
+            }
+        }
+        
+         if (piece != null) {
+            for (int y = 0; y < piece.getLongueur(); y++) {
+                for (int x = 0; x < piece.getLargeur(); x++) {
+                    if(piece.getMatrice()[y][x]==null){
+                        piece_suivante.getComponent(x + y * 5).setBackground(Color.WHITE);
+                    }
+                    else{
+                        piece_suivante.getComponent(x + y * 5).setBackground(piece.getMatrice()[y][x].getCouleur());
+                    }
+                    
+                }
+            }
+             
+        }
+    }
+    
     public void afficherDroite(){
         
         droite = new JPanel();
         Border blackl = BorderFactory.createLineBorder(Color.darkGray, 2);
         
-        droite.setPreferredSize(new Dimension(233,700)); 
-        droite.setLayout(layout);
+        droite.setPreferredSize(new Dimension(233,700));
+        droite.setLayout(gridDroite);
+     
         
         droite.setBorder(blackl);
         
@@ -144,6 +208,7 @@ public class Vue extends JFrame implements ObserverGrille, ObserverTemps{
         next.setSize(100,100);
         next.setBorder(blackl);
         droite.add(next, BorderLayout.CENTER);
+      
     }
     
     public void afficherGauche(){
@@ -159,11 +224,11 @@ public class Vue extends JFrame implements ObserverGrille, ObserverTemps{
      {
          afficherGrille(grille);
      }
-     
-     public void update()
+     public void update(Piece piece)
      {
-      controler.control("B");   
+         afficherPieceSuivante(piece);
      }
+     
 
      
      

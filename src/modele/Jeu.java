@@ -71,6 +71,7 @@ public class Jeu implements ObservableGrille, Runnable {
                         pieceCourante = pieceSuivante;
                         pieceCourante.setBloque(false);
                         pieceSuivante = genererPiece();
+                        notifyObserver(pieceSuivante);
                         System.out.println(pieceSuivante.toString());
                         grille.dessinerPiece(pieceCourante);
                         notifyObserver(grille);
@@ -224,6 +225,11 @@ public class Jeu implements ObservableGrille, Runnable {
     public void notifyObserver(Grille grille) {
         for (ObserverGrille obs : listObserver) {
             obs.update(grille);
+        }
+    }
+    public void notifyObserver(Piece piece) {
+        for (ObserverGrille obs : listObserver) {
+            obs.update(pieceSuivante);
         }
     }
 
