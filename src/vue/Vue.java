@@ -50,10 +50,12 @@ public class Vue extends JFrame implements ObserverGrille{
     GridLayout gridDroite=new GridLayout(3, 1);
     JPanel grille_pan;
     JPanel piece_suivante;
+    JPanel piece_cote;
     
     JPanel gauche;
     JPanel droite;
     
+    private int score;
     
     
     public Vue(TetrisControler controleur) {
@@ -197,7 +199,7 @@ public class Vue extends JFrame implements ObserverGrille{
     public void afficherDroite(){
         
         droite = new JPanel();
-         JPanel cont = new JPanel();
+        JPanel cont = new JPanel();
         JPanel titlePanel = new JPanel();
         JPanel casevide=new JPanel();
         JLabel next = new JLabel("NEXT", SwingConstants.CENTER);
@@ -255,8 +257,9 @@ public class Vue extends JFrame implements ObserverGrille{
         JPanel cont = new JPanel();
         JPanel titlePanel = new JPanel();
         JLabel hold = new JLabel("HOLD", SwingConstants.CENTER);
+        JPanel casevide=new JPanel();
         JPanel scorePanel = new JPanel();
-        String sc= afficherScore();
+        String sc= afficherScore(score);
         JLabel score = new JLabel(sc,SwingConstants.CENTER);
         JLabel titleScore = new JLabel("SCORE",SwingConstants.CENTER);
         
@@ -279,7 +282,16 @@ public class Vue extends JFrame implements ObserverGrille{
         hold.setForeground(Color.orange);
        
         //affichage de la pièce mise de côté
-        afficherCote(null);
+        piece_layout=new GridLayout(4, 4);
+        piece_cote=new JPanel();
+        piece_cote.setPreferredSize(new Dimension(200,200)); 
+        piece_cote.setLayout(piece_layout);
+       
+         for (int i = 0; i < 16; i++) {
+            JComponent ptest = new Case(Color.darkGray,Color.darkGray);
+            
+            piece_cote.add(ptest);
+        }
         
         //affichage du score
         scorePanel.setBackground(Color.DARK_GRAY);
@@ -288,44 +300,25 @@ public class Vue extends JFrame implements ObserverGrille{
             
         titleScore.setFont(new Font("Arial", Font.BOLD, 48));
         titleScore.setForeground(Color.orange);
-        score.setFont(new Font("Arial", Font.CENTER_BASELINE, 20));
+        score.setFont(new Font("Arial", Font.CENTER_BASELINE, 30));
         score.setForeground(Color.lightGray);
         
         //construction du panel
         titlePanel.add(hold, BorderLayout.CENTER);
         cont.add(titlePanel, BorderLayout.CENTER);
+        casevide.setPreferredSize(new Dimension(200,200));
+        casevide.add(piece_cote);
         scorePanel.add(titleScore, BorderLayout.NORTH);
         scorePanel.add(score, BorderLayout.CENTER);
         cont.add(scorePanel, BorderLayout.CENTER);
         gauche.add(cont, BorderLayout.CENTER);
     }
     
-    public void afficherCote(Piece piece){
-        for(int i=0;i<5;i++){
-            for(int j=0;j<5;j++){
-                piece_suivante.getComponent(i + j * 5).setBackground(Color.WHITE);
-            }
-        }
-        
-         if (piece != null) {
-            for (int y = 0; y < piece.getLongueur(); y++) {
-                for (int x = 0; x < piece.getLargeur(); x++) {
-                    if(piece.getMatrice()[y][x]==null){
-                        piece_suivante.getComponent(x + y * 5).setBackground(Color.WHITE);
-                    }
-                    else{
-                        piece_suivante.getComponent(x + y * 5).setBackground(piece.getMatrice()[y][x].getCouleur());
-                    }
-                    
-                }
-            }
-             
-        }
-    }
     
-    public String afficherScore(){
+    public String afficherScore(int score){
         String s="";
-        //s.setText(score "</br><html> Level : " + niveau "</html>");
+       
+        s = Integer.toString(score);
         
         return s;
     }
@@ -341,7 +334,7 @@ public class Vue extends JFrame implements ObserverGrille{
      
      public void update(int score)
      {
-         afficherScore();
+         afficherScore(score);
      }
      
      

@@ -154,9 +154,9 @@ public class Jeu implements ObservableGrille, Runnable {
             case 4:
                 score += 1000;
                 break;
-
+        
         }
-
+        notifyObserver(score);
     }
 
     public Piece genererPiece() {
