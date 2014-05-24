@@ -10,9 +10,9 @@ import Observe.ObserverGrille;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modele.pieces.*;
 import modele.pieces.Barre;
 import modele.pieces.Piece;
-import modele.pieces.*;
 
 /**
  *
@@ -129,7 +129,7 @@ public class Jeu implements ObservableGrille, Runnable {
                     rotationPiece();
                     break;
                 case "Space":
-                    mettreDeCote();
+                    chutePiece();
                     break;
             }
             notifyObserver(grille);
@@ -245,9 +245,23 @@ public class Jeu implements ObservableGrille, Runnable {
         }
     }
     
-    public void mettreDeCote(){
-        //si y a pas de piece de côté, on la place à gauche
-        //sinon on la relâche dans le jeu
+    public void chutePiece(){
+        
+        if (!pieceCourante.isBloque()) {
+            grille.effacerPiece(pieceCourante);
+            pieceCourante.deplacerPieceBas();
+            if (grille.verifierEmplacement(pieceCourante)) {
+                //grille.dessinerPiece(pieceCourante);
+            } else {
+                pieceCourante.deplacerPieceHaut();
+                grille.dessinerPiece(pieceCourante);
+                pieceCourante.setBloque(true);
+                int nb_lignes = grille.effacerLigne();
+                CalculScore(nb_lignes);
+                System.out.println(score);
+            }
+        }
+        
     }
 
     public void addObserver(ObserverGrille obs) {
@@ -264,7 +278,13 @@ public class Jeu implements ObservableGrille, Runnable {
             obs.update(pieceSuivante);
         }
     }
-
+    
+    public void notifyObserver(int score) {
+        for (ObserverGrille obs : listObserver) {
+           obs.update(score);
+        }
+    }
+    
     public void removeObserver() {
         listObserver = new ArrayList<ObserverGrille>();
     }

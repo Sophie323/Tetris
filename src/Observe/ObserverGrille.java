@@ -15,7 +15,8 @@ import modele.pieces.Piece;
  * @author Sophie
  */
 public interface ObserverGrille {
-  public void update(Grille grille);
-  public void update(Piece piece);
+    public void update(Grille grille);
+    public void update(Piece piece);
+    public void update (int score);
   
 }

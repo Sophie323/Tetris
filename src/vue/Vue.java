@@ -256,7 +256,7 @@ public class Vue extends JFrame implements ObserverGrille{
         JPanel titlePanel = new JPanel();
         JLabel hold = new JLabel("HOLD", SwingConstants.CENTER);
         JPanel scorePanel = new JPanel();
-        String sc= getScore();
+        String sc= afficherScore();
         JLabel score = new JLabel(sc,SwingConstants.CENTER);
         JLabel titleScore = new JLabel("SCORE",SwingConstants.CENTER);
         
@@ -279,6 +279,7 @@ public class Vue extends JFrame implements ObserverGrille{
         hold.setForeground(Color.orange);
        
         //affichage de la pièce mise de côté
+        afficherCote(null);
         
         //affichage du score
         scorePanel.setBackground(Color.DARK_GRAY);
@@ -299,9 +300,32 @@ public class Vue extends JFrame implements ObserverGrille{
         gauche.add(cont, BorderLayout.CENTER);
     }
     
-    public String getScore(){
-        String s="";
+    public void afficherCote(Piece piece){
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                piece_suivante.getComponent(i + j * 5).setBackground(Color.WHITE);
+            }
+        }
         
+         if (piece != null) {
+            for (int y = 0; y < piece.getLongueur(); y++) {
+                for (int x = 0; x < piece.getLargeur(); x++) {
+                    if(piece.getMatrice()[y][x]==null){
+                        piece_suivante.getComponent(x + y * 5).setBackground(Color.WHITE);
+                    }
+                    else{
+                        piece_suivante.getComponent(x + y * 5).setBackground(piece.getMatrice()[y][x].getCouleur());
+                    }
+                    
+                }
+            }
+             
+        }
+    }
+    
+    public String afficherScore(){
+        String s="";
+        //s.setText(score "</br><html> Level : " + niveau "</html>");
         
         return s;
     }
@@ -315,7 +339,10 @@ public class Vue extends JFrame implements ObserverGrille{
          afficherPieceSuivante(piece);
      }
      
-
+     public void update(int score)
+     {
+         afficherScore();
+     }
      
      
      
