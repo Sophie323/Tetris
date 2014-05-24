@@ -51,11 +51,10 @@ public class Vue extends JFrame implements ObserverGrille{
     JPanel grille_pan;
     JPanel piece_suivante;
     JPanel piece_cote;
-    
+    JLabel score;
     JPanel gauche;
     JPanel droite;
     
-    private int score;
     
     
     public Vue(TetrisControler controleur) {
@@ -259,9 +258,11 @@ public class Vue extends JFrame implements ObserverGrille{
         JLabel hold = new JLabel("HOLD", SwingConstants.CENTER);
         JPanel casevide=new JPanel();
         JPanel scorePanel = new JPanel();
-        String sc= afficherScore(score);
-        JLabel score = new JLabel(sc,SwingConstants.CENTER);
+        int s=0;
+        
         JLabel titleScore = new JLabel("SCORE",SwingConstants.CENTER);
+        score = new JLabel("0",SwingConstants.CENTER);
+        afficherScore(s);
         
         //affichage du panneau principal
         gauche.setPreferredSize(new Dimension(233,700)); 
@@ -315,12 +316,10 @@ public class Vue extends JFrame implements ObserverGrille{
     }
     
     
-    public String afficherScore(int score){
-        String s="";
+    public void afficherScore(int s){
        
-        s = Integer.toString(score);
-        
-        return s;
+        String sc = Integer.toString(s);
+        score.setText("<html>" + sc + "<br> Niveau </html>");
     }
     
      public void update(Grille grille)
