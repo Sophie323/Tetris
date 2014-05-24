@@ -33,6 +33,12 @@ public class Barre extends Piece{
             matrice[x][0]=block;
         }
     }
+
+    public Barre(int largeur, int longueur, Bloc[][] matrice) {
+        super(largeur, longueur, matrice);
+    }
+
+  
     
     @Override
     public void rotationPiece()

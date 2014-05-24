@@ -34,6 +34,11 @@ public class T extends Piece{
         block.setPositionY(1);
         matrice[0][1]=block;
     }
+
+    public T(int largeur, int longueur, Bloc[][] matrice) {
+        super(largeur, longueur, matrice);
+    }
+    
     
     public void setLargeur(int largeur) {
         this.largeur = largeur;

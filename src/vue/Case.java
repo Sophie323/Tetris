@@ -13,7 +13,9 @@ package vue;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 
 public class Case extends JPanel {
@@ -28,7 +30,15 @@ public class Case extends JPanel {
     }
     
     public Case(Color c){
+        Border black=BorderFactory.createLineBorder(Color.darkGray, 1);
+        //setBorder(black);
         setBackground(c);
+    }
+    public Case(Color fond,Color bordure)
+    {
+        Border border=BorderFactory.createLineBorder(bordure, 1);
+        setBorder(border);
+        setBackground(fond);
     }
     
 }

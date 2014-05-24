@@ -53,7 +53,8 @@ public class Jeu implements ObservableGrille, Runnable {
         return grille;
     }
       
-    public int getScore() {
+    
+    public int getScore(){
         return score;
     }
 
@@ -61,6 +62,7 @@ public class Jeu implements ObservableGrille, Runnable {
         while (true) {
             try {
                 maj("B");
+               
                 if (pieceCourante.isBloque()) {
                     if( score-niveau*500>0)
                     {
@@ -69,16 +71,17 @@ public class Jeu implements ObservableGrille, Runnable {
                     }
                     
                     
-                    pieceSuivante.setPositionX(0);
+                    pieceSuivante.setPositionX((int) (Math.random() * 7));
                     pieceSuivante.setPositionY(0);
                     if (grille.verifierEmplacement(pieceSuivante)) {
                         pieceCourante = pieceSuivante;
                         pieceCourante.setBloque(false);
-                        pieceSuivante = genererPiece();
+                        pieceSuivante=genererPiece();
                         notifyObserver(pieceSuivante);
                         System.out.println(pieceSuivante.toString());
                         grille.dessinerPiece(pieceCourante);
-                        notifyObserver(grille);
+                         notifyObserver(grille);
+                        
                     } else {
                         System.out.println("Perdu");
                         Thread.currentThread().sleep(10000);
@@ -109,6 +112,11 @@ public class Jeu implements ObservableGrille, Runnable {
             switch (action) {
                 case "B":
                     descendrePiece();
+                    if(pieceCourante.isBloque())
+                    {
+                        int nb_lignes = grille.effacerLigne();
+                        CalculScore(nb_lignes);
+                    }
                     break;
                 case "G":
                     deplacerGauche();
@@ -153,11 +161,24 @@ public class Jeu implements ObservableGrille, Runnable {
 
     public Piece genererPiece() {
         Piece piece;
-        piece = listePieces[(int) (Math.random() * 7)];
-        piece.setPositionY(0);
-        piece.setPositionX(0);
-        piece.setBloque(false);
-        return piece;
+        piece=listePieces[(int) (Math.random() * 7)];
+        System.out.println(piece.getClass().getName());
+        if("modele.pieces.T".equals(piece.getClass().getName()))
+        {
+            
+           piece=new T(piece.getLargeur(),piece.getLongueur(),piece.getMatrice());
+           
+            return piece;
+        }
+        if("modele.pieces.Barre".equals(piece.getClass().getName()))
+        {
+           
+           piece=new Barre(piece.getLargeur(),piece.getLongueur(),piece.getMatrice());
+           
+            return piece;
+        }
+       
+        return new Piece(piece.getLargeur(),piece.getLongueur(),piece.getMatrice());
     }
 
     public void descendrePiece() {
@@ -171,8 +192,7 @@ public class Jeu implements ObservableGrille, Runnable {
                 pieceCourante.deplacerPieceHaut();
                 grille.dessinerPiece(pieceCourante);
                 pieceCourante.setBloque(true);
-                int nb_lignes = grille.effacerLigne();
-                CalculScore(nb_lignes);
+                
                 System.out.println(score);
             }
 

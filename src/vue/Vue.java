@@ -46,7 +46,7 @@ public class Vue extends JFrame implements ObserverGrille{
     private TetrisControler controler;
     private JPanel container = new JPanel();
     GridLayout layout = new GridLayout(20, 10);
-    GridLayout piece_layout=new GridLayout(5, 5);
+    GridLayout piece_layout;
     GridLayout gridDroite=new GridLayout(3, 1);
     JPanel grille_pan;
     JPanel piece_suivante;
@@ -97,7 +97,6 @@ public class Vue extends JFrame implements ObserverGrille{
         grille_pan = new JPanel();
         grille_pan.setPreferredSize(new Dimension(350,700)); 
         grille_pan.setLayout(layout);
-
         Border blackline = BorderFactory.createLineBorder(Color.darkGray, 1);
 
         for (int i = 0; i < 200; i++) {
@@ -107,39 +106,22 @@ public class Vue extends JFrame implements ObserverGrille{
         }
         
         //-- Grille de la pièce suivante
-        piece_suivante=new JPanel();
-        piece_suivante.setPreferredSize(new Dimension(100,100)); 
-        piece_suivante.setLayout(piece_layout);
-        piece_suivante.setSize(233, 233);
-         for (int i = 0; i < 25; i++) {
-            JComponent ptest = new Case(Color.white);
-            
-            piece_suivante.add(ptest);
-        }
-        
+       
         afficherGrille(null);
         afficherGauche();
-       // afficherDroite();
-        afficherPieceSuivante(null);
+        afficherDroite();
+        
         addKeyListener(new Fleche());
         setContentPane(container);
         
         
         
-        droite = new JPanel();
-        Border blackl = BorderFactory.createLineBorder(Color.darkGray, 2);
-        droite.setPreferredSize(new Dimension(233,700));
-        droite.setLayout(gridDroite);
+    
         
-        JPanel casep=new JPanel();
-        casep.add(piece_suivante);
-        JLabel next = new JLabel("next");
-        next.setSize(100,100);
-        droite.add(next);
-        droite.add(casep);
+       
        
         container.setLayout(new BorderLayout());
-       // droite.add(piece_suivante);
+       
         
         
         
@@ -174,20 +156,36 @@ public class Vue extends JFrame implements ObserverGrille{
     
     public void afficherPieceSuivante(Piece piece)
     {
-        for(int i=0;i<5;i++){
-            for(int j=0;j<5;j++){
-                piece_suivante.getComponent(i + j * 5).setBackground(Color.WHITE);
+        
+       for(int i=0;i<4;i++){
+            for(int j=0;j<4;j++){
+                piece_suivante.getComponent(i + j * 4).setBackground(Color.DARK_GRAY);
             }
         }
         
          if (piece != null) {
+           
+             piece_suivante.setPreferredSize(new Dimension(piece.getLongueur()*50,piece.getLargeur()*50)); 
+             
+             int positiony=0;
+             int positionx=0;
+             if(piece.getLongueur()<3)
+             {
+                 positiony=1;
+             }
+             
+             if(piece.getLargeur()<3)
+             {
+                 positionx=1;
+             }
             for (int y = 0; y < piece.getLongueur(); y++) {
                 for (int x = 0; x < piece.getLargeur(); x++) {
                     if(piece.getMatrice()[y][x]==null){
-                        piece_suivante.getComponent(x + y * 5).setBackground(Color.WHITE);
+                        piece_suivante.getComponent(x+positionx + (y+positiony) * 4).setBackground(Color.DARK_GRAY);
                     }
                     else{
-                        piece_suivante.getComponent(x + y * 5).setBackground(piece.getMatrice()[y][x].getCouleur());
+                       
+                        piece_suivante.getComponent(x+positionx + (y+positiony) * 4).setBackground(piece.getMatrice()[y][x].getCouleur());
                     }
                     
                 }
@@ -199,18 +197,56 @@ public class Vue extends JFrame implements ObserverGrille{
     public void afficherDroite(){
         
         droite = new JPanel();
+         JPanel cont = new JPanel();
+        JPanel titlePanel = new JPanel();
+        JPanel casevide=new JPanel();
+        JLabel next = new JLabel("NEXT", SwingConstants.CENTER);
+        
+        //affichage du panneau principal
+        droite.setPreferredSize(new Dimension(233,700)); 
         Border blackl = BorderFactory.createLineBorder(Color.darkGray, 2);
-        
-        droite.setPreferredSize(new Dimension(233,700));
-        droite.setLayout(gridDroite);
-     
-        
         droite.setBorder(blackl);
         
-        JLabel next = new JLabel("next");
-        next.setSize(100,100);
-        next.setBorder(blackl);
-        droite.add(next, BorderLayout.CENTER);
+        //affichage du panneau secondaire
+        cont.setPreferredSize(new Dimension(218, 660));
+        Border black = BorderFactory.createLineBorder(Color.darkGray, 1);
+        cont.setBorder(black);
+        
+        //affichage du label "next"
+        titlePanel.setBackground(Color.DARK_GRAY);
+        titlePanel.setPreferredSize(new Dimension(200,60));
+        titlePanel.setLayout(new BorderLayout());       
+               
+        next.setFont(new Font("Arial", Font.BOLD, 48));
+        next.setForeground(Color.orange);
+        
+      
+        
+        
+        //Affichage de la pièce suivante
+        piece_layout=new GridLayout(4, 4);
+        piece_suivante=new JPanel();
+        piece_suivante.setPreferredSize(new Dimension(200,200)); 
+        piece_suivante.setLayout(piece_layout);
+       
+         for (int i = 0; i < 16; i++) {
+            JComponent ptest = new Case(Color.darkGray,Color.darkGray);
+            
+            piece_suivante.add(ptest);
+        }
+        
+        titlePanel.add(next);
+        cont.add(titlePanel);
+         afficherPieceSuivante(null);
+        casevide.setPreferredSize(new Dimension(200,200));
+        casevide.add(piece_suivante);
+        cont.add(casevide);
+       
+        
+       
+       droite.add(cont, BorderLayout.CENTER);
+       
+        
       
     }
     

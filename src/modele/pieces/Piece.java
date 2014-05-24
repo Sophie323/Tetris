@@ -12,7 +12,7 @@ import modele.Bloc;
  *
  * @author p0909863
  */
-public abstract class Piece {
+public class Piece {
     
     protected int positionX;
     protected int positionY;
@@ -26,7 +26,17 @@ public abstract class Piece {
         this.positionX = positionX;
         this.positionY = positionY;
         this.bloque=false;
+        
     }
+
+    public Piece(int largeur, int longueur, Bloc[][] matrice) {
+        this.largeur = largeur;
+        this.longueur = longueur;
+        this.matrice = matrice.clone();
+    }
+    
+    
+       
 
     public boolean isBloque() {
         return bloque;
@@ -35,6 +45,11 @@ public abstract class Piece {
     public void setBloque(boolean bloque) {
         this.bloque = bloque;
     }
+    
+      
+            
+        
+    
     
     @Override
     public String toString()
@@ -105,6 +120,22 @@ public abstract class Piece {
     public void setPositionY(int positionY) {
         this.positionY = positionY;
     }
+
+    public void setMatrice(Bloc[][] matrice) {
+        this.matrice = matrice;
+    }
+
+    public void setLargeur(int largeur) {
+        this.largeur = largeur;
+    }
+
+    public void setLongueur(int longueur) {
+        this.longueur = longueur;
+    }
+    
+
+ 
+    
 
     public int getPositionX() {
         return positionX;
