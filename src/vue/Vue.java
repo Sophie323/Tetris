@@ -51,7 +51,7 @@ public class Vue extends JFrame implements ObserverGrille{
     JPanel grille_pan;
     JPanel piece_suivante;
     JPanel piece_cote;
-    JLabel score;
+    JLabel score = new JLabel("<html> Level : 1 <br>Ligne détruite : 0</html>");
     JPanel gauche;
     JPanel droite;
     
@@ -259,10 +259,11 @@ public class Vue extends JFrame implements ObserverGrille{
         JPanel casevide=new JPanel();
         JPanel scorePanel = new JPanel();
         int s=0;
+        int sc = 0;
         
         JLabel titleScore = new JLabel("SCORE",SwingConstants.CENTER);
         score = new JLabel("0",SwingConstants.CENTER);
-        afficherScore(s);
+        afficherScore(s, sc);
         
         //affichage du panneau principal
         gauche.setPreferredSize(new Dimension(233,700)); 
@@ -316,10 +317,11 @@ public class Vue extends JFrame implements ObserverGrille{
     }
     
     
-    public void afficherScore(int s){
+    public void afficherScore(int score, int niveau){
        
-        String sc = Integer.toString(s);
-        score.setText("<html>" + sc + "<br> Niveau </html>");
+       String sc = Integer.toString(score);
+       String ni = Integer.toString(niveau);
+       this.score.setText("<html>" + sc + "<br> Niveau " + ni + "</html>");
     }
     
      public void update(Grille grille)
@@ -331,9 +333,9 @@ public class Vue extends JFrame implements ObserverGrille{
          afficherPieceSuivante(piece);
      }
      
-     public void update(int score)
+     public void update(int score, int niveau)
      {
-         afficherScore(score);
+         afficherScore(score, niveau);
      }
      
      

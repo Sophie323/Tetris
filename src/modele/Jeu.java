@@ -67,6 +67,7 @@ public class Jeu implements ObservableGrille, Runnable {
                     if( score-niveau*500>0)
                     {
                         niveau++;
+                        notifyObserver(niveau);
                         pause=pause-200;
                     }
                     
@@ -281,7 +282,7 @@ public class Jeu implements ObservableGrille, Runnable {
     
     public void notifyObserver(int score) {
         for (ObserverGrille obs : listObserver) {
-           obs.update(score);
+           obs.update(score, niveau);
         }
     }
     
