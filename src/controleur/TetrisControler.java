@@ -28,6 +28,7 @@ public class TetrisControler {
     this.listeEvenement.add("Jouer");
     this.listeEvenement.add("Hold");
     this.listeEvenement.add("Space");
+    this.listeEvenement.add("RAZ");
    }
   
   public void control(String touche) {

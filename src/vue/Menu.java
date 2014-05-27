@@ -118,6 +118,10 @@ public class Menu extends JFrame {
          {
              controler.control("Hold");
          }
+           if(e.getExtendedKeyCode()==KeyEvent.VK_R)
+         {
+             controler.control("RAZ");
+         }
 
       }
          @Override

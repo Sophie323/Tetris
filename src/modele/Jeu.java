@@ -44,7 +44,6 @@ public class Jeu implements ObservableGrille, Runnable {
         pieceSuivante = genererPiece();
         pieceCourante = genererPiece();
         grille.dessinerPiece(pieceCourante);
-        //notifyObserver(grille);
         score = 0;
         niveau=1;
         pause = 1000;
@@ -71,11 +70,11 @@ public class Jeu implements ObservableGrille, Runnable {
                 maj("B");
                
                 if (pieceCourante.isBloque()) {
-                    if( score-niveau*500>0)
+                    if( score-niveau*500>0 && pause-100>0)
                     {
                         niveau++;
                         notifyObserverNiveau(niveau);
-                        pause=pause-200;
+                        pause=pause-100;
                     }
                     
                     
@@ -91,8 +90,9 @@ public class Jeu implements ObservableGrille, Runnable {
                          notifyObserver(grille);
                         
                     } else {
+                        
                         System.out.println("Perdu");
-                        Thread.currentThread().sleep(10000);
+                        //Thread.currentThread().sleep(10000);
                     }
                 }
                 Thread.currentThread().sleep(pause);
@@ -105,6 +105,26 @@ public class Jeu implements ObservableGrille, Runnable {
                 Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    public void remiseAZero(){
+        pieceSuivante = genererPiece();
+        pieceCourante = genererPiece();
+        pieceCourante.setBloque(false);
+        grille.dessinerPiece(pieceCourante);
+        pieceHold=null;
+        score = 0;
+        niveau=1;
+        pause = 1000;
+        grille=new Grille(10,20);
+        grille.dessinerPiece(pieceCourante);
+       
+        notifyObserver(grille);
+        notifyObserverSuivant(pieceSuivante);
+        notifyObserverHold(pieceHold);
+        notifyObserver(score);
+        notifyObserverNiveau(niveau);
+         mep=false;
+       
     }
 
     public void play() {
@@ -141,6 +161,9 @@ public class Jeu implements ObservableGrille, Runnable {
                     break;
                 case "Hold":
                     hold();
+                    break;
+                case "RAZ":
+                    remiseAZero();
                     break;
             }
             notifyObserver(grille);
