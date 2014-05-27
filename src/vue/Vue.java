@@ -1,11 +1,7 @@
 package vue;
 
-/**
- *
- * @author p0909863
- */
+
 import Observe.ObserverGrille;
-import Observe.ObserverTemps;
 import controleur.TetrisControler;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -41,62 +37,40 @@ import modele.pieces.Piece;
  *
  * @author frederic
  */
-public class Vue extends JFrame implements ObserverGrille{
+public class Vue extends JPanel implements ObserverGrille {
 
     private TetrisControler controler;
-    private JPanel container = new JPanel();
+    // private JPanel container = new JPanel();
     GridLayout layout = new GridLayout(20, 10);
-    GridLayout piece_layout;
-    GridLayout gridDroite=new GridLayout(3, 1);
+    GridLayout piece_layout = new GridLayout(4, 4);
+    GridLayout gridDroite = new GridLayout(3, 1);
     JPanel grille_pan;
     JPanel piece_suivante;
     JPanel piece_cote;
-    JLabel score = new JLabel("<html> Level : 1 <br>Ligne détruite : 0</html>");
+    JLabel score;
     JPanel gauche;
     JPanel droite;
-    
-    
-    
-    public Vue(TetrisControler controleur) {
+    JPanel centre;
+    JLabel niveau;
+
+    public Vue(TetrisControler controleur, Grille jeu, Piece pieceSuivante) {
         super();
         this.controler = controleur;
-    
-        
-        build();
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent arg0) {
-                super.windowClosing(arg0);
-                System.exit(0);
-            }
-        });
+
+        build(jeu, pieceSuivante);
 
     }
 
-    public void build() {
+    public void build(Grille jeu, Piece pieceSuivante) {
 
-        //JMenu jm = new JMenu();
-        JMenuBar jm = new JMenuBar();
-
-        JMenu m = new JMenu("Jeu");
-
-        JMenuItem mi = new JMenuItem("Nouvelle Partie");
-        
-        JMenuItem min = new JMenuItem("Pause");
-
-        //ItemListener i = new Item
-        m.add(mi);
-        m.add(min);
-        jm.add(m);
-        setJMenuBar(jm);
-
-        setTitle("Tetris");
-        setSize(816, 700);
-        setResizable(false);
-        
+        //setTitle("Tetris");
+        //setSize(816, 700);
+        //setResizable(false);
         //--Grille Centrale
+        centre = new JPanel();
+        centre.setPreferredSize(new Dimension(350, 700));
         grille_pan = new JPanel();
-        grille_pan.setPreferredSize(new Dimension(350,700)); 
+        grille_pan.setPreferredSize(new Dimension(350, 680));
         grille_pan.setLayout(layout);
         Border blackline = BorderFactory.createLineBorder(Color.darkGray, 1);
 
@@ -105,282 +79,258 @@ public class Vue extends JFrame implements ObserverGrille{
             ptest.setBorder(blackline);
             grille_pan.add(ptest);
         }
-        
-        //-- Grille de la pièce suivante
-       
-        afficherGrille(null);
-        afficherGauche();
+
+        //-- Grille de la pièce suivant     
         afficherDroite();
-        
-        addKeyListener(new Fleche());
-        setContentPane(container);
-        
-        
-        
-    
-        
-       
-       
-        container.setLayout(new BorderLayout());
-       
-        
-        
-        
-        container.add(grille_pan, BorderLayout.CENTER);
-        container.add(gauche, BorderLayout.WEST);
-        container.add(droite, BorderLayout.EAST);
-        
-        
-     
-        setVisible(true);
-        
-        
+        afficherGauche();
+        afficherGrille(jeu);
+        afficherPieceSuivante(pieceSuivante);
+        afficherPieceHold(null);
+
+        //addKeyListener(new Fleche());
+        //  setContentPane(container);
+        this.setLayout(new BorderLayout());
+
+        centre.add(grille_pan);
+        this.add(centre, BorderLayout.CENTER);
+        this.add(gauche, BorderLayout.WEST);
+        this.add(droite, BorderLayout.EAST);
+        this.setVisible(true);
     }
 
     public void afficherGrille(Grille grille) {
-        
+
         if (grille != null) {
             for (int y = 0; y < grille.getLongueur(); y++) {
                 for (int x = 0; x < grille.getLargeur(); x++) {
-                    if(grille.getGrille()[y][x]==null){
+                    if (grille.getGrille()[y][x] == null) {
                         grille_pan.getComponent(x + y * 10).setBackground(Color.lightGray);
-                    }
-                    else{
+                    } else {
                         grille_pan.getComponent(x + y * 10).setBackground(grille.getGrille()[y][x].getCouleur());
                     }
-                    
+
                 }
             }
-             
+
         }
     }
-    
-    public void afficherPieceSuivante(Piece piece)
-    {
-        
-       for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
+
+    public void afficherPieceSuivante(Piece piece) {
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 piece_suivante.getComponent(i + j * 4).setBackground(Color.DARK_GRAY);
             }
         }
-        
-         if (piece != null) {
-           
-             piece_suivante.setPreferredSize(new Dimension(piece.getLongueur()*50,piece.getLargeur()*50)); 
-             
-             int positiony=0;
-             int positionx=0;
-             if(piece.getLongueur()<3)
-             {
-                 positiony=1;
-             }
-             
-             if(piece.getLargeur()<3)
-             {
-                 positionx=1;
-             }
+
+        if (piece != null) {
+            int positiony = 0;
+            int positionx = 0;
+            if (piece.getLongueur() < 3) {
+                positiony = 1;
+            }
+
+            if (piece.getLargeur() < 3) {
+                positionx = 1;
+            }
             for (int y = 0; y < piece.getLongueur(); y++) {
                 for (int x = 0; x < piece.getLargeur(); x++) {
-                    if(piece.getMatrice()[y][x]==null){
-                        piece_suivante.getComponent(x+positionx + (y+positiony) * 4).setBackground(Color.DARK_GRAY);
+                    if (piece.getMatrice()[y][x] == null) {
+                        piece_suivante.getComponent(x + positionx + (y + positiony) * 4).setBackground(Color.DARK_GRAY);
+                    } else {
+
+                        piece_suivante.getComponent(x + positionx + (y + positiony) * 4).setBackground(piece.getMatrice()[y][x].getCouleur());
                     }
-                    else{
-                       
-                        piece_suivante.getComponent(x+positionx + (y+positiony) * 4).setBackground(piece.getMatrice()[y][x].getCouleur());
-                    }
-                    
                 }
             }
-             
+       }
+    }
+
+    public void afficherPieceHold(Piece piece) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                piece_cote.getComponent(i + j * 4).setBackground(Color.DARK_GRAY);
+            }
+        }
+
+        if (piece != null) {
+
+            int positiony = 0;
+            int positionx = 0;
+            if (piece.getLongueur() < 3) {
+                positiony = 1;
+            }
+
+            if (piece.getLargeur() < 3) {
+                positionx = 1;
+            }
+            for (int y = 0; y < piece.getLongueur(); y++) {
+                for (int x = 0; x < piece.getLargeur(); x++) {
+                    if (piece.getMatrice()[y][x] == null) {
+                        piece_cote.getComponent(x + positionx + (y + positiony) * 4).setBackground(Color.DARK_GRAY);
+                    } else {
+
+                        piece_cote.getComponent(x + positionx + (y + positiony) * 4).setBackground(piece.getMatrice()[y][x].getCouleur());
+                    }
+
+                }
+            }
+
         }
     }
-    
-    public void afficherDroite(){
-        
+
+    public void afficherDroite() {
+
         droite = new JPanel();
         JPanel cont = new JPanel();
         JPanel titlePanel = new JPanel();
-        JPanel casevide=new JPanel();
+        JPanel casevide = new JPanel();
         JLabel next = new JLabel("NEXT", SwingConstants.CENTER);
-        
+
         //affichage du panneau principal
-        droite.setPreferredSize(new Dimension(233,700)); 
+        droite.setPreferredSize(new Dimension(233, 700));
         Border blackl = BorderFactory.createLineBorder(Color.darkGray, 2);
         droite.setBorder(blackl);
-        
+
         //affichage du panneau secondaire
         cont.setPreferredSize(new Dimension(218, 660));
         Border black = BorderFactory.createLineBorder(Color.darkGray, 1);
         cont.setBorder(black);
-        
+
         //affichage du label "next"
         titlePanel.setBackground(Color.DARK_GRAY);
-        titlePanel.setPreferredSize(new Dimension(200,60));
-        titlePanel.setLayout(new BorderLayout());       
-               
+        titlePanel.setPreferredSize(new Dimension(200, 60));
+        titlePanel.setLayout(new BorderLayout());
+
         next.setFont(new Font("Arial", Font.BOLD, 48));
-        next.setForeground(Color.orange);
+        next.setForeground(Color.orange);       
         
-      
-        
-        
-        //Affichage de la pièce suivante
-        piece_layout=new GridLayout(4, 4);
-        piece_suivante=new JPanel();
-        piece_suivante.setPreferredSize(new Dimension(200,200)); 
+        //affichage de la pièce suivante
+        piece_suivante = new JPanel();
+        piece_suivante.setPreferredSize(new Dimension(200, 200));
         piece_suivante.setLayout(piece_layout);
-       
-         for (int i = 0; i < 16; i++) {
-            JComponent ptest = new Case(Color.darkGray,Color.darkGray);
-            
+
+        for (int i = 0; i < 16; i++) {
+            JComponent ptest = new Case(Color.darkGray, Color.darkGray);
+
             piece_suivante.add(ptest);
         }
-        
+
         titlePanel.add(next);
         cont.add(titlePanel);
-         afficherPieceSuivante(null);
-        casevide.setPreferredSize(new Dimension(200,200));
+        casevide.setPreferredSize(new Dimension(200, 200));
         casevide.add(piece_suivante);
         cont.add(casevide);
-       
-        
-       
-       droite.add(cont, BorderLayout.CENTER);
-       
-        
-      
+        droite.add(cont, BorderLayout.CENTER);
     }
-    
-    public void afficherGauche(){
+
+    public void afficherGauche() {
         gauche = new JPanel();
         JPanel cont = new JPanel();
         JPanel titlePanel = new JPanel();
         JLabel hold = new JLabel("HOLD", SwingConstants.CENTER);
-        JPanel casevide=new JPanel();
+        JPanel casevide = new JPanel();
         JPanel scorePanel = new JPanel();
-        int s=0;
+        JPanel niveauPanel = new JPanel();
+        int s = 0;
         int sc = 0;
-        
-        JLabel titleScore = new JLabel("SCORE",SwingConstants.CENTER);
-        score = new JLabel("0",SwingConstants.CENTER);
-        afficherScore(s, sc);
-        
+
         //affichage du panneau principal
-        gauche.setPreferredSize(new Dimension(233,700)); 
+        gauche.setPreferredSize(new Dimension(233, 700));
         Border blackl = BorderFactory.createLineBorder(Color.darkGray, 2);
         gauche.setBorder(blackl);
-        
+
         //affichage du panneau secondaire
         cont.setPreferredSize(new Dimension(218, 660));
         Border black = BorderFactory.createLineBorder(Color.darkGray, 1);
         cont.setBorder(black);
-        
+
         //affichage du label "hold"
         titlePanel.setBackground(Color.DARK_GRAY);
-        titlePanel.setPreferredSize(new Dimension(200,60));
-        titlePanel.setLayout(new BorderLayout());       
-               
+        titlePanel.setPreferredSize(new Dimension(200, 60));
+        titlePanel.setLayout(new BorderLayout());
+
         hold.setFont(new Font("Arial", Font.BOLD, 48));
         hold.setForeground(Color.orange);
-       
+
         //affichage de la pièce mise de côté
-        piece_layout=new GridLayout(4, 4);
-        piece_cote=new JPanel();
-        piece_cote.setPreferredSize(new Dimension(200,200)); 
+        piece_cote = new JPanel();
+        piece_cote.setPreferredSize(new Dimension(200, 200));
         piece_cote.setLayout(piece_layout);
-       
-         for (int i = 0; i < 16; i++) {
-            JComponent ptest = new Case(Color.darkGray,Color.darkGray);
-            
+
+        for (int i = 0; i < 16; i++) {
+            JComponent ptest = new Case(Color.darkGray, Color.darkGray);
+
             piece_cote.add(ptest);
         }
-        
-        //affichage du score
+
+        //affichage du score et du niveau
         scorePanel.setBackground(Color.DARK_GRAY);
-        scorePanel.setPreferredSize(new Dimension(200,200));
-        scorePanel.setLayout(new BorderLayout());       
-            
+        scorePanel.setPreferredSize(new Dimension(200, 100));
+        scorePanel.setLayout(new BorderLayout());
+        JLabel titleScore = new JLabel("SCORE", SwingConstants.CENTER);
+        score = new JLabel("0",SwingConstants.CENTER);
+        JLabel titleNiveau = new JLabel("NIVEAU", SwingConstants.CENTER);
+        niveau = new JLabel("1",SwingConstants.CENTER);
         titleScore.setFont(new Font("Arial", Font.BOLD, 48));
         titleScore.setForeground(Color.orange);
+        titleNiveau.setFont(new Font("Arial", Font.BOLD, 48));
+        titleNiveau.setForeground(Color.orange);
         score.setFont(new Font("Arial", Font.CENTER_BASELINE, 30));
         score.setForeground(Color.lightGray);
+        niveau.setFont(new Font("Arial", Font.CENTER_BASELINE, 30));
+        niveau.setForeground(Color.lightGray);
+
         
+        niveauPanel.setBackground(Color.DARK_GRAY);
+        niveauPanel.setPreferredSize(new Dimension(200, 100));
+        niveauPanel.setLayout(new BorderLayout());
         //construction du panel
         titlePanel.add(hold, BorderLayout.CENTER);
         cont.add(titlePanel, BorderLayout.CENTER);
-        casevide.setPreferredSize(new Dimension(200,200));
+        casevide.setPreferredSize(new Dimension(200, 200));
         casevide.add(piece_cote);
+        cont.add(casevide);
         scorePanel.add(titleScore, BorderLayout.NORTH);
         scorePanel.add(score, BorderLayout.CENTER);
+        niveauPanel.add(titleNiveau,BorderLayout.NORTH);
+        niveauPanel.add(niveau,BorderLayout.CENTER);
+        //scorePanel.add(titleNiveau, BorderLayout.SOUTH);
+        //scorePanel.add(niveau,, BorderLayout.CENTER)
         cont.add(scorePanel, BorderLayout.CENTER);
+        cont.add(niveauPanel, BorderLayout.SOUTH);
         gauche.add(cont, BorderLayout.CENTER);
     }
-    
-    
-    public void afficherScore(int score, int niveau){
-       
-       String sc = Integer.toString(score);
-       String ni = Integer.toString(niveau);
-       this.score.setText("<html>" + sc + "<br> Niveau " + ni + "</html>");
+
+    public void afficherScore(int score) {
+       Integer i=(Integer)score;
+        this.score.setText(i.toString());
     }
-    
-     public void update(Grille grille)
-     {
-         afficherGrille(grille);
-     }
-     public void update(Piece piece)
-     {
-         afficherPieceSuivante(piece);
-     }
-     
-     public void update(int score, int niveau)
-     {
-         afficherScore(score, niveau);
-     }
-     
-     
-     
-    class Fleche implements KeyListener{ 
 
-        public void keyReleased(KeyEvent e) {
-
-      }
-        public void keyPressed(KeyEvent e) {
-         if(e.getExtendedKeyCode()==KeyEvent.VK_DOWN)
-         { controler.control("B");}
-         if(e.getExtendedKeyCode()==KeyEvent.VK_LEFT)
-         {
-             controler.control("G");
-         }
-          if(e.getExtendedKeyCode()==KeyEvent.VK_RIGHT)
-         {
-             controler.control("D");
-         }
-         if(e.getExtendedKeyCode()==KeyEvent.VK_UP)
-         {
-             controler.control("H");
-         }
-         if(e.getExtendedKeyCode()==KeyEvent.VK_SPACE)
-         {
-             controler.control("Space");
-         }
-         if(e.getExtendedKeyCode()==KeyEvent.VK_P)
-         {
-             controler.control("Pause");
-         }
-          if(e.getExtendedKeyCode()==KeyEvent.VK_J)
-         {
-             controler.control("Jouer");
-         }
-
-
-
-      }
-    
-        public void keyTyped(KeyEvent e) {
-        //On affiche le chiffre en plus dans le label
-       
-        }
+    public void afficherNiveau(int niveau) {
+        Integer i=(Integer)niveau;
+        this.niveau.setText(i.toString());
     }
+
+    public void update(Grille grille) {
+        afficherGrille(grille);
+    }
+
+    public void updateSuivant(Piece piece) {
+        afficherPieceSuivante(piece);
+    }
+
+    public void updateHold(Piece piece) {
+        afficherPieceHold(piece);
+    }
+
+    public void update(int score) {
+        afficherScore(score);
+    }
+
+    public void updateNiveau(int niveau) {
+        afficherNiveau(niveau);
+    }
+
+    
 }
-

@@ -23,6 +23,7 @@ public class Jeu implements ObservableGrille, Runnable {
     private Grille grille;
     private Piece pieceCourante;
     private Piece pieceSuivante;
+    private Piece pieceHold;
     private Piece[] listePieces;
     private int score;
     private int niveau;
@@ -43,7 +44,7 @@ public class Jeu implements ObservableGrille, Runnable {
         pieceSuivante = genererPiece();
         pieceCourante = genererPiece();
         grille.dessinerPiece(pieceCourante);
-        notifyObserver(grille);
+        //notifyObserver(grille);
         score = 0;
         niveau=1;
         pause = 1000;
@@ -58,6 +59,12 @@ public class Jeu implements ObservableGrille, Runnable {
         return score;
     }
 
+    public Piece getPieceSuivante() {
+        return pieceSuivante;
+    }
+    
+    
+
     public void run() {
         while (true) {
             try {
@@ -67,7 +74,7 @@ public class Jeu implements ObservableGrille, Runnable {
                     if( score-niveau*500>0)
                     {
                         niveau++;
-                        notifyObserver(niveau);
+                        notifyObserverNiveau(niveau);
                         pause=pause-200;
                     }
                     
@@ -78,7 +85,7 @@ public class Jeu implements ObservableGrille, Runnable {
                         pieceCourante = pieceSuivante;
                         pieceCourante.setBloque(false);
                         pieceSuivante=genererPiece();
-                        notifyObserver(pieceSuivante);
+                        notifyObserverSuivant(pieceSuivante);
                         System.out.println(pieceSuivante.toString());
                         grille.dessinerPiece(pieceCourante);
                          notifyObserver(grille);
@@ -132,6 +139,9 @@ public class Jeu implements ObservableGrille, Runnable {
                 case "Space":
                     chutePiece();
                     break;
+                case "Hold":
+                    hold();
+                    break;
             }
             notifyObserver(grille);
         }
@@ -180,6 +190,39 @@ public class Jeu implements ObservableGrille, Runnable {
         }
        
         return new Piece(piece.getLargeur(),piece.getLongueur(),piece.getMatrice());
+    }
+    
+    public void hold()
+    {
+        if(pieceHold!=null)
+        {
+            pieceHold.setPositionX(pieceCourante.getPositionX());
+            pieceHold.setPositionY(pieceCourante.getPositionY());
+            grille.effacerPiece(pieceCourante);
+            if(grille.verifierEmplacement(pieceHold))
+            {
+                Piece temp=pieceCourante;
+                pieceCourante=pieceHold;
+                pieceHold=temp;
+            }
+        }
+        else
+        {
+            pieceSuivante.setPositionX(pieceCourante.getPositionX());
+            pieceSuivante.setPositionY(pieceCourante.getPositionY());
+            grille.effacerPiece(pieceCourante);
+            if(grille.verifierEmplacement(pieceSuivante))
+            {
+                Piece temp=pieceCourante;
+                pieceCourante=pieceSuivante;
+                pieceHold=temp;
+                pieceSuivante=genererPiece();
+            }
+        }
+        grille.dessinerPiece(pieceCourante);
+        notifyObserver(grille);
+        notifyObserverSuivant(pieceSuivante);
+        notifyObserverHold(pieceHold);
     }
 
     public void descendrePiece() {
@@ -248,20 +291,9 @@ public class Jeu implements ObservableGrille, Runnable {
     
     public void chutePiece(){
         
-        if (!pieceCourante.isBloque()) {
-            grille.effacerPiece(pieceCourante);
-            pieceCourante.deplacerPieceBas();
-            if (grille.verifierEmplacement(pieceCourante)) {
-                //grille.dessinerPiece(pieceCourante);
-            } else {
-                pieceCourante.deplacerPieceHaut();
-                grille.dessinerPiece(pieceCourante);
-                pieceCourante.setBloque(true);
-                int nb_lignes = grille.effacerLigne();
-                CalculScore(nb_lignes);
-                System.out.println(score);
+        while (!pieceCourante.isBloque()) {
+           descendrePiece();
             }
-        }
         
     }
 
@@ -274,15 +306,25 @@ public class Jeu implements ObservableGrille, Runnable {
             obs.update(grille);
         }
     }
-    public void notifyObserver(Piece piece) {
+    public void notifyObserverSuivant(Piece piece) {
         for (ObserverGrille obs : listObserver) {
-            obs.update(pieceSuivante);
+            obs.updateSuivant(pieceSuivante);
+        }
+    }
+     public void notifyObserverHold(Piece piece) {
+        for (ObserverGrille obs : listObserver) {
+            obs.updateHold(pieceHold);
+        }
+    }
+    public void notifyObserver(int score) {
+        for (ObserverGrille obs : listObserver) {
+           obs.update(score);
         }
     }
     
-    public void notifyObserver(int score) {
+      public void notifyObserverNiveau(int niveau) {
         for (ObserverGrille obs : listObserver) {
-           obs.update(score, niveau);
+           obs.updateNiveau(niveau);
         }
     }
     

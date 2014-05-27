@@ -10,6 +10,7 @@ package tetris;
 import controleur.TetrisControler;
 import javax.swing.SwingUtilities;
 import modele.Jeu;
+import vue.Menu;
 import vue.Temps;
 import vue.Vue;
 
@@ -43,12 +44,13 @@ public class Tetris {
     TetrisControler controler = new TetrisControler(jeu);
     
     //Création de notre fenêtre avec le contrôleur en paramètre
-    Vue vue = new Vue(controler);
+    Vue vue = new Vue(controler, jeu.getGrille(),jeu.getPieceSuivante());
     
     //Ajout de la fenêtre comme observer de notre modèle
     jeu.addObserver(vue);
-    (new Thread(jeu)).start();
-    //temps.addObserver(vue);
-    //temps.run();
+   // (new Thread(jeu)).start();
+    
+    
+    Menu m=new Menu(jeu,controler,vue);
   }
 }

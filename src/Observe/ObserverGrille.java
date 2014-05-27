@@ -16,7 +16,8 @@ import modele.pieces.Piece;
  */
 public interface ObserverGrille {
     public void update(Grille grille);
-    public void update(Piece piece);
-    public void update (int score, int niveau);
-  
+    public void updateSuivant(Piece piece);
+    public void updateHold(Piece piece);
+    public void update (int score);
+   public void updateNiveau (int niveau);
 }

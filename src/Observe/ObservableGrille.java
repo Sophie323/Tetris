@@ -7,6 +7,7 @@
 package Observe;
 
 import modele.Grille;
+import modele.pieces.Piece;
 
 /**
  *
@@ -16,4 +17,6 @@ public interface ObservableGrille {
   public void addObserver(ObserverGrille obs);
   public void removeObserver();
   public void notifyObserver(Grille grille);
+  public void notifyObserverSuivant(Piece piece);
+  public void notifyObserverHold(Piece piece);
 }

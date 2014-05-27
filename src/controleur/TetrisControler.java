@@ -26,6 +26,7 @@ public class TetrisControler {
     this.listeEvenement.add("G");
     this.listeEvenement.add("Pause");
     this.listeEvenement.add("Jouer");
+    this.listeEvenement.add("Hold");
     this.listeEvenement.add("Space");
    }
   
