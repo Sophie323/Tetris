@@ -184,8 +184,10 @@ public class Vue extends JPanel implements ObserverGrille {
         droite = new JPanel();
         JPanel cont = new JPanel();
         JPanel titlePanel = new JPanel();
+        JPanel cmdPanel = new JPanel();
         JPanel casevide = new JPanel();
         JLabel next = new JLabel("NEXT", SwingConstants.CENTER);
+        JLabel cmd;
 
         //affichage du panneau principal
         droite.setPreferredSize(new Dimension(233, 700));
@@ -215,12 +217,24 @@ public class Vue extends JPanel implements ObserverGrille {
 
             piece_suivante.add(ptest);
         }
-
+        
+        //affichage des commandes
+        cmdPanel.setBackground(Color.DARK_GRAY);
+        cmdPanel.setPreferredSize(new Dimension(200, 150));
+        cmdPanel.setLayout(new BorderLayout());
+        
+        cmd = new JLabel("<html>Commandes :<br>J : commencer/reprendre <br>P : pause  <br>R : recommencer <br>H : hold <br>SPACE : faire chuter la pièce", SwingConstants.CENTER);
+        cmd.setFont(new Font("Arial", Font.CENTER_BASELINE, 13));
+        cmd.setForeground(Color.lightGray);       
+        
+        
         titlePanel.add(next);
         cont.add(titlePanel);
         casevide.setPreferredSize(new Dimension(200, 200));
         casevide.add(piece_suivante);
         cont.add(casevide);
+        cmdPanel.add(cmd);
+        cont.add(cmdPanel);
         droite.add(cont, BorderLayout.CENTER);
     }
 
@@ -285,6 +299,7 @@ public class Vue extends JPanel implements ObserverGrille {
         niveauPanel.setBackground(Color.DARK_GRAY);
         niveauPanel.setPreferredSize(new Dimension(200, 100));
         niveauPanel.setLayout(new BorderLayout());
+        
         //construction du panel
         titlePanel.add(hold, BorderLayout.CENTER);
         cont.add(titlePanel, BorderLayout.CENTER);
