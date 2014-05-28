@@ -28,7 +28,8 @@ public class Jeu implements ObservableGrille, Runnable {
     private int score;
     private int niveau;
     private int pause;
-    boolean mep = false;
+    boolean mep = true;
+    boolean perdu=false;
     private ArrayList<ObserverGrille> listObserver = new ArrayList<ObserverGrille>();
 
     public Jeu() {
@@ -66,6 +67,8 @@ public class Jeu implements ObservableGrille, Runnable {
 
     public void run() {
         while (true) {
+           if(!perdu)
+           {
             try {
                 maj("B");
                
@@ -90,7 +93,7 @@ public class Jeu implements ObservableGrille, Runnable {
                          notifyObserver(grille);
                         
                     } else {
-                        
+                        perdu=true;
                         System.out.println("Perdu");
                         //Thread.currentThread().sleep(10000);
                     }
@@ -104,6 +107,7 @@ public class Jeu implements ObservableGrille, Runnable {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
             }
+           }
         }
     }
     public void remiseAZero(){
@@ -117,7 +121,7 @@ public class Jeu implements ObservableGrille, Runnable {
         pause = 1000;
         grille=new Grille(10,20);
         grille.dessinerPiece(pieceCourante);
-       
+        perdu=false;
         notifyObserver(grille);
         notifyObserverSuivant(pieceSuivante);
         notifyObserverHold(pieceHold);
