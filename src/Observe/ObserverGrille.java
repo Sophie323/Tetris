@@ -20,4 +20,6 @@ public interface ObserverGrille {
     public void updateHold(Piece piece);
     public void update (int score);
    public void updateNiveau (int niveau);
+   public void updatePerdue();
+   public void updateNonPerdue();
 }

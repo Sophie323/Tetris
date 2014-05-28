@@ -52,6 +52,9 @@ public class Vue extends JPanel implements ObserverGrille {
     JPanel droite;
     JPanel centre;
     JLabel niveau;
+    JLabel perdu;
+    JPanel partiePerdue=new JPanel();
+    JPanel cont;
 
     public Vue(TetrisControler controleur, Grille jeu, Piece pieceSuivante) {
         super();
@@ -84,8 +87,8 @@ public class Vue extends JPanel implements ObserverGrille {
         afficherDroite();
         afficherGauche();
         afficherGrille(jeu);
-        afficherPieceSuivante(pieceSuivante);
-        afficherPieceHold(null);
+        afficherPiece(pieceSuivante,piece_suivante);
+        afficherPiece(null,piece_cote);
 
         //addKeyListener(new Fleche());
         //  setContentPane(container);
@@ -115,41 +118,12 @@ public class Vue extends JPanel implements ObserverGrille {
         }
     }
 
-    public void afficherPieceSuivante(Piece piece) {
-
-        for (int i = 0; i < 4; i++) {
+   
+    public void afficherPiece(Piece piece, JPanel panel)
+    {
+         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                piece_suivante.getComponent(i + j * 4).setBackground(Color.DARK_GRAY);
-            }
-        }
-
-        if (piece != null) {
-            int positiony = 0;
-            int positionx = 0;
-            if (piece.getLongueur() < 3) {
-                positiony = 1;
-            }
-
-            if (piece.getLargeur() < 3) {
-                positionx = 1;
-            }
-            for (int y = 0; y < piece.getLongueur(); y++) {
-                for (int x = 0; x < piece.getLargeur(); x++) {
-                    if (piece.getMatrice()[y][x] == null) {
-                        piece_suivante.getComponent(x + positionx + (y + positiony) * 4).setBackground(Color.DARK_GRAY);
-                    } else {
-
-                        piece_suivante.getComponent(x + positionx + (y + positiony) * 4).setBackground(piece.getMatrice()[y][x].getCouleur());
-                    }
-                }
-            }
-       }
-    }
-
-    public void afficherPieceHold(Piece piece) {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                piece_cote.getComponent(i + j * 4).setBackground(Color.DARK_GRAY);
+                panel.getComponent(i + j * 4).setBackground(Color.DARK_GRAY);
             }
         }
 
@@ -167,10 +141,10 @@ public class Vue extends JPanel implements ObserverGrille {
             for (int y = 0; y < piece.getLongueur(); y++) {
                 for (int x = 0; x < piece.getLargeur(); x++) {
                     if (piece.getMatrice()[y][x] == null) {
-                        piece_cote.getComponent(x + positionx + (y + positiony) * 4).setBackground(Color.DARK_GRAY);
+                        panel.getComponent(x + positionx + (y + positiony) * 4).setBackground(Color.DARK_GRAY);
                     } else {
 
-                        piece_cote.getComponent(x + positionx + (y + positiony) * 4).setBackground(piece.getMatrice()[y][x].getCouleur());
+                        panel.getComponent(x + positionx + (y + positiony) * 4).setBackground(piece.getMatrice()[y][x].getCouleur());
                     }
 
                 }
@@ -178,6 +152,8 @@ public class Vue extends JPanel implements ObserverGrille {
 
         }
     }
+    
+   
 
     public void afficherDroite() {
 
@@ -240,12 +216,13 @@ public class Vue extends JPanel implements ObserverGrille {
 
     public void afficherGauche() {
         gauche = new JPanel();
-        JPanel cont = new JPanel();
+        cont = new JPanel();
         JPanel titlePanel = new JPanel();
         JLabel hold = new JLabel("HOLD", SwingConstants.CENTER);
         JPanel casevide = new JPanel();
         JPanel scorePanel = new JPanel();
         JPanel niveauPanel = new JPanel();
+        partiePerdue=new JPanel();
         int s = 0;
         int sc = 0;
 
@@ -300,6 +277,18 @@ public class Vue extends JPanel implements ObserverGrille {
         niveauPanel.setPreferredSize(new Dimension(200, 100));
         niveauPanel.setLayout(new BorderLayout());
         
+        
+        
+        
+        partiePerdue.setBackground(Color.DARK_GRAY);
+        partiePerdue.setPreferredSize(new Dimension(200, 100));
+        partiePerdue.setLayout(new BorderLayout());
+        perdu = new JLabel("Perdu",SwingConstants.CENTER);
+        perdu.setFont(new Font("Arial", Font.BOLD, 48));
+        perdu.setForeground(Color.red);
+        
+        partiePerdue.add(perdu);
+        
         //construction du panel
         titlePanel.add(hold, BorderLayout.CENTER);
         cont.add(titlePanel, BorderLayout.CENTER);
@@ -310,10 +299,9 @@ public class Vue extends JPanel implements ObserverGrille {
         scorePanel.add(score, BorderLayout.CENTER);
         niveauPanel.add(titleNiveau,BorderLayout.NORTH);
         niveauPanel.add(niveau,BorderLayout.CENTER);
-        //scorePanel.add(titleNiveau, BorderLayout.SOUTH);
-        //scorePanel.add(niveau,, BorderLayout.CENTER)
         cont.add(scorePanel, BorderLayout.CENTER);
         cont.add(niveauPanel, BorderLayout.SOUTH);
+        
         gauche.add(cont, BorderLayout.CENTER);
     }
 
@@ -332,11 +320,11 @@ public class Vue extends JPanel implements ObserverGrille {
     }
 
     public void updateSuivant(Piece piece) {
-        afficherPieceSuivante(piece);
+        afficherPiece(piece,piece_suivante);
     }
 
     public void updateHold(Piece piece) {
-        afficherPieceHold(piece);
+        afficherPiece(piece,piece_cote);
     }
 
     public void update(int score) {
@@ -347,5 +335,18 @@ public class Vue extends JPanel implements ObserverGrille {
         afficherNiveau(niveau);
     }
 
+    public void updatePerdue()
+    {
+        cont.add(partiePerdue);
+        cont.repaint();
+        validate();
+    }
+    
+    public void updateNonPerdue()
+    {
+        cont.remove(partiePerdue);
+        cont.repaint();
+        validate();
+    }
     
 }

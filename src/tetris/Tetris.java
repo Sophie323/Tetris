@@ -11,7 +11,7 @@ import controleur.TetrisControler;
 import javax.swing.SwingUtilities;
 import modele.Jeu;
 import vue.Menu;
-import vue.Temps;
+
 import vue.Vue;
 
 /**
@@ -39,7 +39,7 @@ public class Tetris {
     
      //Instanciation de notre modèle
     Jeu jeu = new Jeu();
-   // Temps temps=new Temps();
+ 
     //Création du contrôleur
     TetrisControler controler = new TetrisControler(jeu);
     

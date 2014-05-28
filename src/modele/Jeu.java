@@ -88,13 +88,14 @@ public class Jeu implements ObservableGrille, Runnable {
                         pieceCourante.setBloque(false);
                         pieceSuivante=genererPiece();
                         notifyObserverSuivant(pieceSuivante);
-                        System.out.println(pieceSuivante.toString());
+                        
                         grille.dessinerPiece(pieceCourante);
                          notifyObserver(grille);
                         
                     } else {
                         perdu=true;
-                        System.out.println("Perdu");
+                        notifyPerdu();
+                     
                         //Thread.currentThread().sleep(10000);
                     }
                 }
@@ -127,7 +128,8 @@ public class Jeu implements ObservableGrille, Runnable {
         notifyObserverHold(pieceHold);
         notifyObserver(score);
         notifyObserverNiveau(niveau);
-         mep=false;
+        notifyNonPerdu();
+        mep=false;
        
     }
 
@@ -200,7 +202,7 @@ public class Jeu implements ObservableGrille, Runnable {
     public Piece genererPiece() {
         Piece piece;
         piece=listePieces[(int) (Math.random() * 7)];
-        System.out.println(piece.getClass().getName());
+        
         if("modele.pieces.T".equals(piece.getClass().getName()))
         {
             
@@ -264,7 +266,7 @@ public class Jeu implements ObservableGrille, Runnable {
                 grille.dessinerPiece(pieceCourante);
                 pieceCourante.setBloque(true);
                 
-                System.out.println(score);
+                
             }
 
         }
@@ -355,6 +357,17 @@ public class Jeu implements ObservableGrille, Runnable {
         }
     }
     
+      public void notifyPerdu() {
+        for (ObserverGrille obs : listObserver) {
+           obs.updatePerdue();
+        }
+    }
+      
+      public void notifyNonPerdu() {
+        for (ObserverGrille obs : listObserver) {
+           obs.updateNonPerdue();
+        }
+    }
     public void removeObserver() {
         listObserver = new ArrayList<ObserverGrille>();
     }

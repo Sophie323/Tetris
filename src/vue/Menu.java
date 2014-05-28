@@ -83,11 +83,11 @@ public class Menu extends JFrame {
     class Touche implements KeyListener{
         @Override
          public void keyReleased(KeyEvent e) {
-             System.out.println("key released");
+            
       }
          @Override
         public void keyPressed(KeyEvent e) {
-            System.out.println("key pressed");
+           
          if(e.getExtendedKeyCode()==KeyEvent.VK_DOWN)
          { controler.control("B");}
          if(e.getExtendedKeyCode()==KeyEvent.VK_LEFT)
@@ -127,41 +127,7 @@ public class Menu extends JFrame {
          @Override
         public void keyTyped(KeyEvent e)
         {
-            System.out.println("key typed");
-        }
-    }
-    
-    class ClicBouton implements MouseListener{
-        @Override
-        public void mouseExited(MouseEvent e)
-        {
             
         }
-         @Override
-        public void mouseEntered(MouseEvent e)
-        {
-            
-        }
-         @Override
-        public void mouseReleased(MouseEvent e)
-        {
-            
-        }
-          @Override
-        public void mousePressed(MouseEvent e)
-        {
-            
-        }
-        
-        @Override
-        public void mouseClicked(MouseEvent e)
-        {
-                afficherJeu();
-               (new Thread(jeu)).start();
-            System.out.println("mouse clicked");
-        }
-    }
-    
-    
-    
+    }  
 } 
