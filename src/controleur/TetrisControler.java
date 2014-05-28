@@ -14,7 +14,7 @@ import modele.Jeu;
  * @author Sophie
  */
 public class TetrisControler {
-  public Jeu jeu;
+  private Jeu jeu;
   protected ArrayList<String> listeEvenement = new ArrayList<String>();
   
   public TetrisControler(Jeu jeu){

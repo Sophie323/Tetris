@@ -5,31 +5,15 @@ import Observe.ObserverGrille;
 import controleur.TetrisControler;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicComboBoxUI.ItemHandler;
 import modele.Grille;
 import modele.pieces.Piece;
 
@@ -43,7 +27,7 @@ public class Vue extends JPanel implements ObserverGrille {
     // private JPanel container = new JPanel();
     GridLayout layout = new GridLayout(20, 10);
     GridLayout piece_layout = new GridLayout(4, 4);
-    GridLayout gridDroite = new GridLayout(3, 1);
+
     JPanel grille_pan;
     JPanel piece_suivante;
     JPanel piece_cote;
