@@ -67,8 +67,8 @@ public class Jeu implements ObservableGrille, Runnable {
 
     public void run() {
         while (true) {
-           if(!perdu)
-           {
+           
+           
             try {
                 maj("B");
                
@@ -94,7 +94,11 @@ public class Jeu implements ObservableGrille, Runnable {
                         
                     } else {
                         perdu=true;
+                       
                         notifyPerdu();
+                        synchronized (this) {
+                        wait();
+                    }
                      
                         //Thread.currentThread().sleep(10000);
                     }
@@ -108,14 +112,13 @@ public class Jeu implements ObservableGrille, Runnable {
             } catch (InterruptedException ex) {
                 Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
             }
-           }
+           
         }
     }
     public void remiseAZero(){
         pieceSuivante = genererPiece();
         pieceCourante = genererPiece();
         pieceCourante.setBloque(false);
-        grille.dessinerPiece(pieceCourante);
         pieceHold=null;
         score = 0;
         niveau=1;
@@ -130,6 +133,10 @@ public class Jeu implements ObservableGrille, Runnable {
         notifyObserverNiveau(niveau);
         notifyNonPerdu();
         mep=false;
+        synchronized (this) {
+            notify();
+
+        }
        
     }
 
